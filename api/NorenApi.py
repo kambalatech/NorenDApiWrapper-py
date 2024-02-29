@@ -116,7 +116,7 @@ class NorenApi:
         values["uid"]       = self.__username        
         values["actid"]     = self.__username
         values["susertoken"]    = self.__susertoken
-        values["source"]    = 'API'                
+        values["source"]    = 'DAPI'                
 
         payload = json.dumps(values)
 
@@ -276,6 +276,53 @@ class NorenApi:
         self.__susertoken = None
 
         return resDict
+    
+    def subscribe(self, instrument, feed_type=FeedType.TOUCHLINE):
+        values = {}
+
+        if(feed_type == FeedType.TOUCHLINE):
+            values['t'] =  't'
+        elif(feed_type == FeedType.SNAPQUOTE):
+            values['t'] =  'd'
+        else:
+            values['t'] =  str(feed_type)
+
+        if type(instrument) == list:
+            values['k'] = '#'.join(instrument)
+        else :
+            values['k'] = instrument
+
+        data = json.dumps(values)
+
+        #print(data)
+        self.__ws_send(data)
+
+    def unsubscribe(self, instrument, feed_type=FeedType.TOUCHLINE):
+        values = {}
+
+        if(feed_type == FeedType.TOUCHLINE):
+            values['t'] =  'ut'
+        elif(feed_type == FeedType.SNAPQUOTE):
+            values['t'] =  'ud'
+        
+        if type(instrument) == list:
+            values['k'] = '#'.join(instrument)
+        else :
+            values['k'] = instrument
+
+        data = json.dumps(values)
+
+        #print(data)
+        self.__ws_send(data)
+
+    def subscribe_orders(self):
+        values = {'t': 'o'}
+        values['actid'] = self.__accountid        
+
+        data = json.dumps(values)
+
+        reportmsg(data)
+        self.__ws_send(data)
 
     def get_clients(self):
         config = NorenApi.__service_config
