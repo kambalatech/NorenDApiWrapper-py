@@ -8,18 +8,18 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="Api",
-    version="0.0.1",
+    version="0.0.3",
     author="KumarAnand",
     author_email="kumar.anand@kambala.co.in",
     description="A package for NorenOMS",
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(),
-    classifiers=(
+    classifiers=[
         "Programming Language :: Python :: 3",
         "License :: Other/Proprietary License",
         "Operating System :: OS Independent",
-    ),
+    ],
     install_requires=[
     ],
 )
